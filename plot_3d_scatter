@@ -1,0 +1,101 @@
+# 导入包
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import datasets
+
+def irirs():
+    # 加载鸢尾花数据集
+    iris = datasets.load_iris()
+    # 取出前三个特征作为横纵坐标和高度
+    X = iris.data[:, :3]
+    y = iris.target
+
+    X1 = np.zeros((3000, 3)) + 5
+
+    X1[:1000, 0] = X1[:1000, 0] + np.random.uniform(0, 1, 1000)
+    X1[:1000, 1] = X1[:1000, 1] + np.random.uniform(0, 1, 1000)
+    X1[:1000, 2] = X1[:1000, 2] + np.random.uniform(0, 1, 1000)
+
+    X1[1000:2000, 0] = X1[1000:2000, 0] + np.random.uniform(-1, 0, 1000)
+    X1[1000:2000, 1] = X1[1000:2000, 1] + np.random.uniform(0, 1, 1000)
+    X1[1000:2000, 2] = X1[1000:2000, 2] + np.random.uniform(0, 1, 1000)
+
+    X1[2000:, 0] = X1[2000:, 0] + np.random.uniform(0, 1, 1000)
+    X1[2000:, 1] = X1[2000:, 1] + np.random.uniform(0, 1, 1000)
+    X1[2000:, 2] = X1[2000:, 2] + np.random.uniform(-1, 0, 1000)
+
+    Y1 = np.zeros(3000)
+    Y1[:1000] = 0
+    Y1[1000:2000] = 1
+    Y1[2000:] = 2
+    # 创建3D图像对象
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    # X = X + (np.random.random(X.shape)*2-1) * 1
+    X = X1
+    y = Y1
+    # 绘制散点图
+    ax.scatter(X[:, 0], X[:, 1], X[:, 2], c=y, alpha=0.5)
+    # 设置坐标轴标签
+    ax.set_xlabel('Sepal length')
+    ax.set_ylabel('Sepal width')
+    ax.set_zlabel('Petal length')
+    # 设置坐标轴取值范围
+    # ax.set_xlim(4,8); ax.set_ylim(1,5); ax.set_zlim(0,8)
+    # 设置正交投影
+    ax.set_proj_type('ortho')
+
+    # 显示图像
+    plt.show()
+
+    import scikitplot as skplt
+
+    # pca = PCA(random_state=1)
+    # pca.fit(X)
+
+    # skplt.decomposition.plot_pca_3d_projection(pca, X, y)
+    # plt.show()
+
+def random_class(random_state=8):
+    import matplotlib.pyplot as plt
+
+    from sklearn.datasets import make_classification
+    from sklearn.datasets import make_blobs
+    from sklearn.datasets import make_gaussian_quantiles
+
+    plt.figure(figsize=(8, 8))
+    plt.subplots_adjust(bottom=.05, top=.9, left=.05, right=.95)
+
+    plt.subplot(321)
+    plt.title("One informative feature, one cluster per class", fontsize='small')
+    X1, Y1 = make_classification(n_features=3, n_redundant=0, n_informative=2,
+                                 n_clusters_per_class=1, n_classes=3)
+    plt.scatter(X1[:, 0], X1[:, 1], marker='o', c=Y1,
+                s=25, edgecolor='k')
+
+    plt.subplot(325)
+    plt.title("Three blobs", fontsize='small')
+    X1, Y1 = make_blobs(n_features=4, n_samples=1000, centers=4,  random_state=random_state, cluster_std=[2.8, 1.9, 1.6, 1.8])
+    # plt.scatter(X1[:, 0], X1[:, 1], marker='o', c=Y1,
+    #             s=25, edgecolor='k')
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    # X = X + (np.random.random(X.shape)*2-1) * 1
+    X = X1
+    y = Y1
+    # 绘制散点图
+    ax.scatter(X[:, 0], X[:, 1], X[:, 2], c=y+4, alpha=0.25)
+    # 设置坐标轴取值范围
+    # ax.set_xlim(4,8); ax.set_ylim(1,5); ax.set_zlim(0,8)
+    # 设置坐标轴标签
+    ax.set_xlabel('Sepal length')
+    ax.set_ylabel('Sepal width')
+    ax.set_zlabel('Petal length')
+    plt.show()
+
+if __name__ == "__main__":
+    for i in range(0, 10000):
+        ### i = 0 的时候比较好
+        random_class(random_state=i)
+        print(i)
